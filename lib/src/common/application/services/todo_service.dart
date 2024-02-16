@@ -19,7 +19,7 @@ class TodoService {
 
     await Hive.openBox<Todo>(dbName);
 
-    print("MyHive => ${TodoService().getMikeList()}");
+    // print("MyHive => ${TodoService().getMikeList()}");
   }
 
   List<Todo> getMikeList() {
@@ -35,7 +35,8 @@ class TodoService {
   }
 
   Future<void> updateTodo(Todo _todo, Todo _newTodo) async {
-    final existingTodo = todoBox.get(_todo.key); // Retrieve by unique key
+    // Retrieve by unique key
+    final existingTodo = todoBox.get(_todo.key);
 
     final updatedTodo = existingTodo?.copyWith(
       title: _newTodo.title,
@@ -43,16 +44,19 @@ class TodoService {
       isCompleted: _newTodo.isCompleted,
     );
 
+    // using the key, replace the existing _todo with the updateTodo
     await todoBox.put(_todo.key, updatedTodo!);
   }
 
   Future<void> doneTodo(Todo _todo) async {
-    final existingTodo = todoBox.get(_todo.key); // Retrieve by unique key
+    // Retrieve by unique key
+    final existingTodo = todoBox.get(_todo.key);
 
     final updatedTodo = existingTodo?.copyWith(
       isCompleted: !_todo.isCompleted,
     );
 
+    // using the key, replace the existing _todo with the updateTodo
     await todoBox.put(_todo.key, updatedTodo!);
   }
 }

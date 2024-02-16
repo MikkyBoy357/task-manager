@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../common/constants/constants.dart';
+import '../../../../../common/common.dart';
 import '../../../blocs/blocs.dart';
 import '../widgets/todo_tile.dart';
 
@@ -36,10 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20.0),
                   Text(
                       "${todos.where((element) => element.isCompleted).toList().length}/${todos.length} Completed"),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20.0),
                   ListView.separated(
                     itemCount: todos.length,
                     shrinkWrap: true,
@@ -52,9 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       return TodoTile(todo: todo);
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20.0),
                 ],
               ),
+            );
+          } else if (state is TodoListLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is TodoListError) {
+            return Center(
+              child: Text(state.error, textAlign: TextAlign.center),
             );
           } else {
             return const Center(
@@ -68,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: otpColor,
         onPressed: () {
           context.goNamed(
             RouteNames.details,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../common/constants/constants.dart';
+import '../../../../../common/common.dart';
 import '../../../blocs/blocs.dart';
 import '../../../domain/domain.dart';
 
@@ -23,6 +23,7 @@ class TodoTile extends StatelessWidget {
         );
       },
       leading: Checkbox(
+        activeColor: checkColor,
         value: todo.isCompleted,
         onChanged: (bool? val) {
           context.read<TodoListBloc>().add(DoneTodo(todo));

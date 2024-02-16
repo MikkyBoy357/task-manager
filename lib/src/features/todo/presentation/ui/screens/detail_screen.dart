@@ -39,7 +39,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Details Screen -> ${widget.action}'),
+        title: const Text('Details Screen'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SingleChildScrollView(
@@ -49,7 +49,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             TextField(
               enabled: widget.action != "read",
               controller: titleController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Title",
               ),
             ),
@@ -58,18 +58,22 @@ class _DetailsScreenState extends State<DetailsScreen> {
               controller: descriptionController,
               minLines: 1,
               maxLines: 3,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Description",
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
+                if (titleController.text.isEmpty ||
+                    descriptionController.text.isEmpty) {
+                  return;
+                }
+
                 if (widget.action == "read") {
-                  // Implement Read
                 } else {
                   final newTodo = Todo(
-                    id: widget.action == "new" ? Uuid().v1() : widget.todo!.id,
+                    id: widget.action == "new" ? Uuid().v4() : widget.todo!.id,
                     title: titleController.text,
                     description: descriptionController.text,
                     isCompleted: widget.action == "new"
@@ -80,13 +84,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   if (widget.action == "new") {
                     context.read<TodoListBloc>().add(AddTodo(newTodo));
                   }
+
                   if (widget.action == "edit") {
                     context.read<TodoListBloc>().add(
                           UpdateTodo(todo: widget.todo!, newTodo: newTodo),
                         );
                   }
                 }
-                Navigator.pop(context);
+
+                context.pop();
               },
               child: Text(widget.action == "read" ? "DONE" : "SAVE"),
             ),
