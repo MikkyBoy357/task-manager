@@ -1,15 +1,31 @@
 part of 'todo_list_bloc.dart';
 
-sealed class TodoListState {
+abstract class TodoListState extends Equatable {
+  const TodoListState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class TodoListInitial extends TodoListState {
   final List<Todo> todos;
-  const TodoListState({required this.todos});
+  const TodoListInitial(this.todos);
+  @override
+  List<Object> get props => [todos];
 }
 
-final class TodoListInitial extends TodoListState {
-  TodoListInitial({required List<Todo> todos}) : super(todos: todos);
+class TodoListLoading extends TodoListState {}
+
+class TodoListLoaded extends TodoListState {
+  final List<Todo> todos;
+  const TodoListLoaded(this.todos);
+  @override
+  List<Object> get props => [todos];
 }
 
-final class TodoListUpdated extends TodoListState {
-  TodoListUpdated({required List<Todo> todos})
-      : super(todos: TodoService().getMikeList());
+class TodoListError extends TodoListState {
+  final String error;
+  const TodoListError(this.error);
+  @override
+  List<Object> get props => [error];
 }

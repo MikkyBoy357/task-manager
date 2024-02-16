@@ -1,5 +1,5 @@
-import 'common/application/application.dart';
-import 'features/todo/domain/domain.dart';
+import '../../../features/todo/domain/domain.dart';
+import '../application.dart';
 
 class TodoRepository {
   final TodoService _todoService;

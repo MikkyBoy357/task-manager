@@ -17,7 +17,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => TodoListBloc()),
+        BlocProvider(
+          create: (context) => TodoListBloc(
+            TodoRepository(
+              TodoService(),
+            ),
+          ),
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: appRouter(context),

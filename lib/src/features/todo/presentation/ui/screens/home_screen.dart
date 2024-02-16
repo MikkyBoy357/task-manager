@@ -15,6 +15,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+    context.read<TodoListBloc>().add(LoadTodos());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: BlocBuilder<TodoListBloc, TodoListState>(
         builder: (context, state) {
-          if (state.todos.isNotEmpty) {
+          if (state is TodoListLoaded && state.todos.isNotEmpty) {
             final todos = state.todos;
 
             return SingleChildScrollView(
@@ -51,11 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else {
-            return Center(
-                child: Text(
-              "Nothing to see here\nClick the add button below",
-              textAlign: TextAlign.center,
-            ));
+            return const Center(
+              child: Text(
+                "Nothing to see here\nClick the add button below",
+                textAlign: TextAlign.center,
+              ),
+            );
           }
         },
       ),

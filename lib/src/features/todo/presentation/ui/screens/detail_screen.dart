@@ -86,7 +86,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         );
                   }
                 }
-                context.pop();
+                Navigator.pop(context);
               },
               child: Text(widget.action == "read" ? "DONE" : "SAVE"),
             ),

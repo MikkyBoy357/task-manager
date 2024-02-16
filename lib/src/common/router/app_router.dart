@@ -19,8 +19,7 @@ GoRouter appRouter(BuildContext context) {
             name: RouteNames.details,
             path: 'details',
             builder: (BuildContext context, GoRouterState state) {
-              final todo = state.extra is Todo ? state.extra as Todo : null;
-              print("<-> $todo");
+              final todo = state.extra as Todo?;
 
               return DetailsScreen(
                 action: state.uri.queryParameters["action"] ?? "read",

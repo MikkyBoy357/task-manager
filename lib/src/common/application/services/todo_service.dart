@@ -27,30 +27,32 @@ class TodoService {
   }
 
   Future<void> addTodo(Todo _todo) async {
-    print("Add Todo => ${_todo.id}");
     await todoBox.add(_todo);
   }
 
   Future<void> deleteTodo(Todo _todo) async {
-    print("Delete Todo => ${_todo.id}");
     await _todo.delete();
   }
 
   Future<void> updateTodo(Todo _todo, Todo _newTodo) async {
-    print("Update Todo => ${_todo.id}");
+    final existingTodo = todoBox.get(_todo.key); // Retrieve by unique key
 
-    _todo
-      ..title = _newTodo.title
-      ..description = _newTodo.description
-      ..isCompleted = _newTodo.isCompleted;
+    final updatedTodo = existingTodo?.copyWith(
+      title: _newTodo.title,
+      description: _newTodo.description,
+      isCompleted: _newTodo.isCompleted,
+    );
 
-    _todo.save();
+    await todoBox.put(_todo.key, updatedTodo!);
   }
 
   Future<void> doneTodo(Todo _todo) async {
-    print("Update Todo => ${_todo.id}");
+    final existingTodo = todoBox.get(_todo.key); // Retrieve by unique key
 
-    _todo.isCompleted = !_todo.isCompleted;
-    _todo.save();
+    final updatedTodo = existingTodo?.copyWith(
+      isCompleted: !_todo.isCompleted,
+    );
+
+    await todoBox.put(_todo.key, updatedTodo!);
   }
 }
