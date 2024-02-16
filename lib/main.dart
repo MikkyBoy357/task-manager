@@ -6,6 +6,7 @@ import 'package:task_manager/screens/detail_screen.dart';
 import 'package:task_manager/services/todoService.dart';
 import 'package:task_manager/utils/route_names.dart';
 
+import 'models/todo.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
@@ -29,8 +30,12 @@ final GoRouter _router = GoRouter(
           name: RouteNames.details,
           path: 'details',
           builder: (BuildContext context, GoRouterState state) {
+            final todo = state.extra is Todo ? state.extra as Todo : null;
+            print("<-> $todo");
+
             return DetailsScreen(
               action: state.uri.queryParameters["action"] ?? "read",
+              todo: todo,
             );
           },
         ),

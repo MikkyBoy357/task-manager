@@ -21,3 +21,9 @@ class UpdateTodo extends TodoListEvent {
 
   const UpdateTodo({required this.todo});
 }
+
+class DoneTodo extends TodoListEvent {
+  final Todo todo;
+
+  const DoneTodo({required this.todo});
+}

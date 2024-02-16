@@ -31,7 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   SizedBox(height: 20),
-                  Text("0/10 Completed"),
+                  Text(
+                      "${todos.where((element) => element.isCompleted).toList().length}/${todos.length} Completed"),
                   SizedBox(height: 20),
                   ListView.separated(
                     itemCount: todos.length,
@@ -76,18 +77,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
 Widget buildTodoTile(BuildContext context, Todo todo) {
   return ListTile(
-    onTap: () {},
+    onTap: () {
+      context.goNamed(
+        RouteNames.details,
+        queryParameters: {
+          "action": "read",
+        },
+        extra: todo,
+      );
+    },
     leading: Checkbox(
       value: todo.isCompleted,
-      onChanged: (bool? val) {},
+      onChanged: (bool? val) {
+        context.read<TodoListBloc>().add(DoneTodo(todo: todo));
+      },
     ),
     title: Text(
       todo.title,
       maxLines: 1,
+      style: TextStyle(
+        decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+      ),
     ),
     subtitle: Text(
       todo.description,
       maxLines: 2,
+      style: TextStyle(
+        decoration: todo.isCompleted ? TextDecoration.lineThrough : null,
+      ),
     ),
     trailing: Row(
       mainAxisSize: MainAxisSize.min,
@@ -104,7 +121,13 @@ Widget buildTodoTile(BuildContext context, Todo todo) {
         ),
         IconButton(
           onPressed: () {
-            context.read<TodoListBloc>().add(DeleteTodo(todo: todo));
+            context.goNamed(
+              RouteNames.details,
+              queryParameters: {
+                "action": "edit",
+              },
+              extra: todo,
+            );
           },
           icon: const Icon(
             Icons.edit,

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:task_manager/models/todo.dart';
 
 part 'todo_list_event.dart';
@@ -10,6 +9,7 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
     on<AddTodo>(_addTodo);
     on<DeleteTodo>(_deleteTodo);
     on<UpdateTodo>(_updateTodo);
+    on<DoneTodo>(_doneTodo);
   }
 
   void _addTodo(AddTodo event, Emitter<TodoListState> emit) {
@@ -29,6 +29,17 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
     for (int i = 0; i < state.todos.length; i++) {
       if (event.todo.id == state.todos[i].id) {
         state.todos[i] = event.todo;
+      }
+    }
+    emit(TodoListUpdated(todos: state.todos));
+  }
+
+  void _doneTodo(DoneTodo event, Emitter<TodoListState> emit) {
+    for (int i = 0; i < state.todos.length; i++) {
+      if (event.todo.id == state.todos[i].id) {
+        state.todos[i] = event.todo.copyWith(
+          isCompleted: !state.todos[i].isCompleted,
+        );
       }
     }
     emit(TodoListUpdated(todos: state.todos));

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_manager/blocs/todo_list/todo_list_bloc.dart';
 import 'package:task_manager/models/todo.dart';
-import 'package:task_manager/utils/route_names.dart';
 import 'package:uuid/uuid.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -47,12 +46,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
         child: Column(
           children: [
             TextField(
+              enabled: widget.action != "read",
               controller: titleController,
               decoration: InputDecoration(
                 hintText: "Title",
               ),
             ),
             TextField(
+              enabled: widget.action != "read",
               controller: descriptionController,
               minLines: 1,
               maxLines: 3,
@@ -67,23 +68,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   // Implement Read
                 } else {
                   final newTodo = Todo(
-                    id: Uuid().v1(),
+                    id: widget.action == "new" ? Uuid().v1() : widget.todo!.id,
                     title: titleController.text,
                     description: descriptionController.text,
-                    isCompleted: false,
+                    isCompleted: widget.action == "new"
+                        ? false
+                        : widget.todo!.isCompleted,
                   );
 
                   print("ID => ${newTodo.id}");
                   if (widget.action == "new") {
                     context.read<TodoListBloc>().add(AddTodo(todo: newTodo));
                   }
-                  // if (widget.action == "edit") {
-                  //   context.read<TodoListBloc>().add(UpdateTodo(todo: newTodo));
-                  // }
+                  if (widget.action == "edit") {
+                    context.read<TodoListBloc>().add(UpdateTodo(todo: newTodo));
+                  }
                 }
-                Navigator.pop(context);
+                context.pop();
               },
-              child: Text("Done"),
+              child: Text(widget.action == "read" ? "DONE" : "SAVE"),
             ),
           ],
         ),
