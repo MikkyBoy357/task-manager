@@ -8,13 +8,13 @@ class Todo extends HiveObject {
   final String id;
 
   @HiveField(1)
-  final String title;
+  String title;
 
   @HiveField(2)
-  final String description;
+  String description;
 
   @HiveField(3)
-  final bool isCompleted;
+  late bool isCompleted;
 
   // Provide a constructor without named parameters
   Todo({

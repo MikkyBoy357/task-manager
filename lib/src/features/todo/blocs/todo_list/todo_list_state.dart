@@ -6,9 +6,10 @@ sealed class TodoListState {
 }
 
 final class TodoListInitial extends TodoListState {
-  TodoListInitial({required List<Todo> todos}) : super(todos: []);
+  TodoListInitial({required List<Todo> todos}) : super(todos: todos);
 }
 
 final class TodoListUpdated extends TodoListState {
-  TodoListUpdated({required List<Todo> todos}) : super(todos: todos);
+  TodoListUpdated({required List<Todo> todos})
+      : super(todos: TodoService().getMikeList());
 }

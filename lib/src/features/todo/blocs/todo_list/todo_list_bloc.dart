@@ -1,11 +1,14 @@
 import 'package:bloc/bloc.dart';
-import 'package:task_manager/models/todo.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../../common/application/application.dart';
+import '../../domain/domain.dart';
 
 part 'todo_list_event.dart';
 part 'todo_list_state.dart';
 
 class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
-  TodoListBloc() : super(TodoListInitial(todos: [])) {
+  TodoListBloc() : super(TodoListInitial(todos: TodoService().getMikeList())) {
     on<AddTodo>(_addTodo);
     on<DeleteTodo>(_deleteTodo);
     on<UpdateTodo>(_updateTodo);
@@ -13,35 +16,27 @@ class TodoListBloc extends Bloc<TodoListEvent, TodoListState> {
   }
 
   void _addTodo(AddTodo event, Emitter<TodoListState> emit) {
-    print("..1.. => ..${state.todos}");
-    state.todos.add(event.todo);
-    print("..2.. => ..${state.todos}");
+    // Hive operation
+    TodoService().addTodo(event.todo);
     emit(TodoListUpdated(todos: state.todos));
     print("..3.. => ..${state.todos}");
   }
 
   void _deleteTodo(DeleteTodo event, Emitter<TodoListState> emit) {
-    state.todos.remove(event.todo);
+    // Hive operation
+    TodoService().deleteTodo(event.todo);
     emit(TodoListUpdated(todos: state.todos));
   }
 
   void _updateTodo(UpdateTodo event, Emitter<TodoListState> emit) {
-    for (int i = 0; i < state.todos.length; i++) {
-      if (event.todo.id == state.todos[i].id) {
-        state.todos[i] = event.todo;
-      }
-    }
+    // Hive operation
+    TodoService().updateTodo(event.todo, event.newTodo);
     emit(TodoListUpdated(todos: state.todos));
   }
 
   void _doneTodo(DoneTodo event, Emitter<TodoListState> emit) {
-    for (int i = 0; i < state.todos.length; i++) {
-      if (event.todo.id == state.todos[i].id) {
-        state.todos[i] = event.todo.copyWith(
-          isCompleted: !state.todos[i].isCompleted,
-        );
-      }
-    }
+    // Hive operation
+    TodoService().doneTodo(event.todo);
     emit(TodoListUpdated(todos: state.todos));
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_manager/blocs/todo_list/todo_list_bloc.dart';
-import 'package:task_manager/models/todo.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../blocs/blocs.dart';
+import '../../../domain/domain.dart';
 
 class DetailsScreen extends StatefulWidget {
   final String action;
@@ -76,12 +77,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         : widget.todo!.isCompleted,
                   );
 
-                  print("ID => ${newTodo.id}");
                   if (widget.action == "new") {
-                    context.read<TodoListBloc>().add(AddTodo(todo: newTodo));
+                    context.read<TodoListBloc>().add(AddTodo(newTodo));
                   }
                   if (widget.action == "edit") {
-                    context.read<TodoListBloc>().add(UpdateTodo(todo: newTodo));
+                    context.read<TodoListBloc>().add(
+                          UpdateTodo(todo: widget.todo!, newTodo: newTodo),
+                        );
                   }
                 }
                 context.pop();
