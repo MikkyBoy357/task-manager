@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_manager/src/common/common.dart';
 import 'package:task_manager/src/common/router/app_router.dart';
-
-import 'features/todo/blocs/blocs.dart';
+import 'package:task_manager/src/features/todo/cubits/cubits.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -18,7 +17,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TodoListBloc(
+          create: (context) => TodoListCubit(
             TodoRepository(
               TodoService(),
             ),

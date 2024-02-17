@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:hive/hive.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../features/todo/domain/domain.dart';
@@ -13,8 +14,12 @@ class TodoService {
   final Box<Todo> todoBox = Hive.box(dbName);
 
   static Future<void> startService() async {
-    Directory document = await getApplicationDocumentsDirectory();
-    Hive.init(document.path);
+    if (kIsWeb) {
+      Hive.initFlutter();
+    } else {
+      Directory document = await getApplicationDocumentsDirectory();
+      Hive.init(document.path);
+    }
     Hive.registerAdapter<Todo>(TodoAdapter());
 
     await Hive.openBox<Todo>(dbName);

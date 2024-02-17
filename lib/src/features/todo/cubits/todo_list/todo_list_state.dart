@@ -1,4 +1,4 @@
-part of 'todo_list_bloc.dart';
+part of 'todo_list_cubit.dart';
 
 abstract class TodoListState extends Equatable {
   const TodoListState();

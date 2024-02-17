@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../blocs/blocs.dart';
+import '../../../cubits/cubits.dart';
 import '../../../domain/domain.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -82,17 +82,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   );
 
                   if (widget.action == "new") {
-                    context.read<TodoListBloc>().add(AddTodo(newTodo));
+                    context.read<TodoListCubit>().addTodo(newTodo);
                   }
 
                   if (widget.action == "edit") {
-                    context.read<TodoListBloc>().add(
-                          UpdateTodo(todo: widget.todo!, newTodo: newTodo),
-                        );
+                    context
+                        .read<TodoListCubit>()
+                        .updateTodo(widget.todo!, newTodo);
                   }
                 }
 
-                context.pop();
+                context.go('/');
               },
               child: Text(widget.action == "read" ? "DONE" : "SAVE"),
             ),

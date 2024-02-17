@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../common/common.dart';
-import '../../../blocs/blocs.dart';
+import '../../../cubits/cubits.dart';
 import '../../../domain/domain.dart';
 
 class TodoTile extends StatelessWidget {
@@ -26,7 +26,7 @@ class TodoTile extends StatelessWidget {
         activeColor: checkColor,
         value: todo.isCompleted,
         onChanged: (bool? val) {
-          context.read<TodoListBloc>().add(DoneTodo(todo));
+          context.read<TodoListCubit>().doneTodo(todo);
         },
       ),
       title: Text(
@@ -48,7 +48,7 @@ class TodoTile extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              context.read<TodoListBloc>().add(DeleteTodo(todo));
+              context.read<TodoListCubit>().deleteTodo(todo);
             },
             icon: const Icon(
               Icons.delete,

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../common/common.dart';
-import '../../../blocs/blocs.dart';
+import '../../../cubits/cubits.dart';
 import '../widgets/todo_tile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<TodoListBloc>().add(LoadTodos());
+    context.read<TodoListCubit>().loadTodos();
   }
 
   @override
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Todo List'),
       ),
-      body: BlocBuilder<TodoListBloc, TodoListState>(
+      body: BlocBuilder<TodoListCubit, TodoListState>(
         builder: (context, state) {
           if (state is TodoListLoaded && state.todos.isNotEmpty) {
             final todos = state.todos;
